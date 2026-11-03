@@ -88,3 +88,13 @@ pip install pandas numpy matplotlib seaborn scikit-learn
 ## Project Status
 
 The five planned machine learning models and the final model comparison have been implemented. The project documents the observed results and limitations of the current feature selection.
+## Project Objectives
+
+The main objectives of SalesIQ are:
+
+- Analyse Amazon India sales data to identify meaningful sales patterns.
+- Perform data cleaning and exploratory data analysis.
+- Develop regression models to predict order amounts.
+- Develop classification models to identify order cancellations.
+- Compare machine learning models using appropriate evaluation metrics.
+- Build an interactive dashboard using Streamlit.
