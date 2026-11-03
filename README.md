@@ -98,3 +98,21 @@ The main objectives of SalesIQ are:
 - Develop classification models to identify order cancellations.
 - Compare machine learning models using appropriate evaluation metrics.
 - Build an interactive dashboard using Streamlit.
+## Dataset Description
+
+SalesIQ uses the Amazon India Sales Dataset containing approximately 65,000 records and 24 original columns.
+
+For analysis and model development, relevant columns were selected, including:
+
+- Date
+- Status
+- Fulfilment
+- Shipping Service Level
+- Category
+- Size
+- Quantity
+- Amount
+- Shipping State
+- B2B
+
+An additional feature, `is_cancelled`, was created for cancellation prediction.
