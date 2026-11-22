@@ -1,118 +1,140 @@
-# SalesIQ — Sales Intelligence and Prediction
+# SalesIQ - Sales Intelligence and Prediction
 
-SalesIQ is a machine learning project that analyzes Amazon India sales data and evaluates models for sales amount prediction and order cancellation classification.
+SalesIQ is an interactive sales analytics and machine learning dashboard built with Python and Streamlit. It explores Amazon India sales data, visualizes business trends, compares predictive models, and provides a cancellation prediction interface.
 
-## Project Objectives
+## Features
 
-- Clean and preprocess sales data.
-- Explore sales patterns through visualizations.
-- Predict sales amount using regression models.
-- Classify orders as cancelled or not cancelled.
-- Compare machine learning models using appropriate evaluation metrics.
+- Interactive Streamlit dashboard with a clean, professional light theme
+- Sales overview with revenue, record count, cancellation rate, and average order value
+- Category, fulfilment, B2B, distribution, and monthly trend analysis
+- Colourful Plotly charts with consistent white backgrounds
+- Regression model comparison for sales amount prediction
+- Cancellation classification model comparison
+- Confusion matrix and actual-versus-predicted visualizations
+- Interactive cancellation prediction form
+- Searchable dataset explorer
+
+## Dashboard Pages
+
+- **Overview** - High-level sales KPIs and category/cancellation summaries
+- **Sales EDA** - Exploratory filters and visual analysis
+- **Model Comparison** - Regression and classification performance tables
+- **Model Details** - Individual model plots and evaluation details
+- **Cancellation Prediction** - Predict whether an order is likely to be cancelled
+- **Dataset Explorer** - Filter and download the cleaned dataset
 
 ## Dataset
 
-- **Dataset:** Amazon India Sales Data
-- **Period:** March–May 2022
-- **Original records:** Approximately 65,000
-- **Regression target:** `amount`
-- **Classification target:** `is_cancelled`
+The project uses `Amazon India Sales Data.csv`, which contains approximately 65,000 Amazon India order records from March-May 2022.
 
-The `is_cancelled` target is derived from the order status. The original `status` column is excluded from classification features to avoid target leakage.
+Relevant fields include:
 
-## Data Preprocessing and EDA
+- `date`
+- `status`
+- `fulfilment`
+- `ship_service_level`
+- `category`
+- `size`
+- `qty`
+- `amount`
+- `ship_state`
+- `b2b`
 
-The project includes column-name standardization, numeric conversion, removal of unnecessary columns, handling of missing values, and preparation of separate datasets for regression and classification.
+The `is_cancelled` target is derived from `status`; the original `status` field is excluded from classification features to prevent target leakage.
 
-Exploratory data analysis includes sales amount distribution, category-wise sales, monthly sales trends, a correlation heatmap, top states by sales, fulfilment analysis, and cancellation counts.
-
-## Machine Learning Models
+## Machine Learning
 
 ### Regression
 
-1. Linear Regression
-2. Random Forest Regressor
+The regression models use order quantity (`qty`) to estimate sales amount (`amount`).
 
-Both models use `qty` as the input feature and `amount` as the target.
+- Linear Regression
+- Random Forest Regressor
 
-| Model | MAE | R² Score |
-|---|---:|---:|
-| Linear Regression | 212.9430 | 0.0114 |
-| Random Forest Regressor | 211.8403 | 0.0355 |
+Evaluation metrics:
 
-**Finding:** Random Forest Regressor performs slightly better on both metrics. However, both models have low R² scores, indicating that quantity alone is insufficient to explain sales amount variation.
+- Mean Absolute Error (MAE)
+- R-squared (R2)
+
+Quantity alone has limited predictive power, so both regression models may have low R2 scores.
 
 ### Classification
 
-1. Logistic Regression
-2. Decision Tree Classifier
-3. K-Nearest Neighbors (KNN)
+The classification models predict whether an order is likely to be cancelled.
 
-The target is `is_cancelled`. The features include quantity, category, size, fulfilment, shipping service level, and B2B status. The classification evaluation uses a stratified 80/20 train-test split.
+- Logistic Regression
+- Decision Tree Classifier
+- K-Nearest Neighbors
 
-| Model | Accuracy | Precision | Recall | F1-score |
-|---|---:|---:|---:|---:|
-| Logistic Regression | 0.9568 | 0.9953 | 0.6975 | 0.8202 |
-| Decision Tree | 0.9568 | 0.9953 | 0.6975 | 0.8202 |
-| KNN | 0.9559 | 0.9937 | 0.6921 | 0.8159 |
+Evaluation metrics:
 
-**Finding:** Logistic Regression and Decision Tree tie on the reported metrics. KNN performs slightly worse. Although precision is high, recall is approximately 69–70%, meaning some cancelled orders are missed.
+- Accuracy
+- Precision
+- Recall
+- F1-score
+- Confusion matrix
 
-## Final Conclusion
+The training process uses an 80/20 stratified train-test split and preprocessing pipelines for numeric and categorical features.
 
-Among the tested regression models, Random Forest Regressor performs best, although its predictive power is limited with the current feature selection. For cancellation classification, Logistic Regression and Decision Tree produce identical predictions on the test set and tie on the reported metrics.
+## Installation
 
-The project demonstrates data preprocessing, exploratory analysis, regression, classification, and model evaluation. Future improvements could include additional relevant features, feature engineering, and further evaluation.
-
-## Technologies Used
-
-- Python
-- Pandas and NumPy
-- Matplotlib and Seaborn
-- Scikit-learn
-- Git and GitHub
-
-## How to Run
-
-1. Clone or download this repository.
-2. Install the required Python packages.
-3. Ensure the dataset is available at the path used in the script, or update the path.
-4. Run the main Python file.
-
-Install dependencies with:
+Requires Python 3.9 or later.
 
 ```bash
-pip install pandas numpy matplotlib seaborn scikit-learn
+git clone https://github.com/Aarti546/SalesIQ-Sales-Intelligence-and-Prediction.git
+cd SalesIQ-Sales-Intelligence-and-Prediction
+python -m pip install -r requirements.txt
 ```
 
-## Project Status
+## Run the Dashboard
 
-The five planned machine learning models and the final model comparison have been implemented. The project documents the observed results and limitations of the current feature selection.
-## Project Objectives
+```bash
+python -m streamlit run app.py
+```
 
-The main objectives of SalesIQ are:
+Open the local URL shown by Streamlit, normally `http://localhost:8501`.
 
-- Analyse Amazon India sales data to identify meaningful sales patterns.
-- Perform data cleaning and exploratory data analysis.
-- Develop regression models to predict order amounts.
-- Develop classification models to identify order cancellations.
-- Compare machine learning models using appropriate evaluation metrics.
-- Build an interactive dashboard using Streamlit.
-## Dataset Description
+The dashboard must be launched from the project directory because it reads `Amazon India Sales Data.csv` using a relative path.
 
-SalesIQ uses the Amazon India Sales Dataset containing approximately 65,000 records and 24 original columns.
+## Run the Python Analysis
 
-For analysis and model development, relevant columns were selected, including:
+The standalone analysis script can be run with:
 
-- Date
-- Status
-- Fulfilment
-- Shipping Service Level
-- Category
-- Size
-- Quantity
-- Amount
-- Shipping State
-- B2B
+```bash
+python main.py
+```
 
-An additional feature, `is_cancelled`, was created for cancellation prediction.
+`main.py` performs data cleaning, exploratory analysis, model training, evaluation, and static visualizations.
+
+## Project Structure
+
+```text
+SalesIQ/
+|-- app.py
+|-- main.py
+|-- README.md
+|-- requirements.txt
+|-- Amazon India Sales Data.csv
+|-- Amazon India Sales DataExcel.xlsx
+|-- .streamlit/
+|   `-- config.toml
+`-- images/
+```
+
+## Technologies
+
+- Python
+- Streamlit
+- Pandas
+- NumPy
+- Plotly
+- Scikit-learn
+- Matplotlib
+- Seaborn
+- OpenPyXL
+
+## Notes
+
+- Model results describe historical data and should not be interpreted as guaranteed future performance.
+- Recorded sales totals are not necessarily realized revenue.
+- Improvements could include richer features, date-based seasonality, product attributes, hyperparameter tuning, and time-aware validation.
