@@ -138,3 +138,22 @@ SalesIQ/
 - Model results describe historical data and should not be interpreted as guaranteed future performance.
 - Recorded sales totals are not necessarily realized revenue.
 - Improvements could include richer features, date-based seasonality, product attributes, hyperparameter tuning, and time-aware validation.
+
+## Streamlit Community Cloud Deployment
+
+Use these settings:
+
+- Repository: `Aarti546/SalesIQ-Sales-Intelligence-and-Prediction`
+- Branch: `main`
+- Main file path: `app.py`
+- Python version: `3.12`
+
+Deployment checklist:
+
+1. Push the latest repository changes to the `main` branch.
+2. Confirm `app.py`, `requirements.txt`, `.streamlit/config.toml`, and `Amazon India Sales Data.csv` are in the repository root.
+3. Select `app.py` as the main Streamlit file.
+4. Select Python 3.12 in Streamlit Community Cloud, or use the `.python-version` file included in the repository.
+5. Keep `Amazon India Sales Data.csv` at the project root; do not replace it with a local Windows or macOS absolute path.
+6. Wait for initial startup model training to complete. The app caches the trained models after the first run.
+7. Open the deployed URL and verify the Overview, Sales EDA, Model Comparison, Model Details, Cancellation Prediction, and Dataset Explorer pages.

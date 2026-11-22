@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from pathlib import Path
 
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression, LogisticRegression
@@ -9,9 +10,7 @@ from sklearn.metrics import mean_absolute_error, r2_score, classification_report
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
+
 from sklearn.metrics import (
     accuracy_score,
     precision_score,
@@ -22,7 +21,8 @@ from sklearn.metrics import (
 )
 from sklearn.tree import DecisionTreeClassifier, plot_tree
 
-df = pd.read_csv("C:/Users/Udit ComputerS/Desktop/SalesIQ/Amazon India Sales Data.csv")
+BASE_DIR = Path(__file__).resolve().parent
+df = pd.read_csv(BASE_DIR / "Amazon India Sales Data.csv")
 
 # Keeping an untouched copy for reference
 df_raw = df.copy()
@@ -44,7 +44,7 @@ df.columns = df.columns.str.replace("-", "_")
 
 
 #Ensure Amount is numeric
-df['amount'] = pd.to_numeric(df['amount'], errors='coerce')
+df['amount'] = pd.to_numeric(df['amount'], errors='coerce')   #nan if not done
 
 
 # 4. REMOVE UNNECESSARY COLUMNS
@@ -100,7 +100,7 @@ print("\nRemaining missing values:")
 print(df.isnull().sum())
 
 print("\nFinal dataset shape:", df.shape)
-
+print(df.info())
 
 # Dataset for regression models
 # Amount is the target, so rows with missing amount cannot be used
@@ -150,15 +150,16 @@ plt.figure(figsize=(8,5))
 sns.histplot(regression_df['amount'], bins=30, color='orange', kde=True)
 plt.title("Sales Amount Distribution", fontsize=14)
 plt.xlabel("Sales Amount")
+plt.grid()
 plt.show()
 
 
 # 2. Category-wise Sales
 plt.figure(figsize=(10,5))
 sns.barplot(x='category', y='amount', data=regression_df, estimator=sum, color='purple')
-plt.xticks(rotation=45)
 plt.title("Category-wise Sales", fontsize=14)
 plt.ylabel("Total Sales")
+plt.grid()
 plt.show()
 
 
@@ -179,6 +180,7 @@ plt.title("Monthly Sales Trend", fontsize=14)
 plt.xlabel("Month")
 plt.ylabel("Total Sales")
 plt.xticks([3, 4, 5], ['March', 'April', 'May'])
+plt.grid()
 plt.show()
 
 
@@ -198,6 +200,7 @@ top_states.plot(kind='bar', color='pink')
 plt.title("Top 10 States by Sales", fontsize=14)
 plt.ylabel("Total Sales")
 plt.xticks(rotation=45)
+plt.grid()
 plt.show()
 
 
@@ -389,7 +392,7 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y,
     test_size=0.2,
     random_state=42,
-    stratify=y
+    stratify=y    #same proportion of each class in train-test datasets
 )
 
 # Convert categorical features into numerical columns
@@ -673,32 +676,11 @@ print("\nBest regression model based on MAE:", best_regression)
 
 # FINAL COMPARISON - CLASSIFICATION MODELS----------------------
 
-classification_comparison = pd.DataFrame({
-    "Model": [
-        "Logistic Regression",
-        "Decision Tree",
-        "KNN"
-    ],
-    "Accuracy": [
-        accuracy_score(y_test, y_pred),
-        accuracy_score(y_test, y_pred_dt),
-        accuracy_score(y_test, y_pred_knn)
-    ],
-    "Precision": [
-        precision_score(y_test, y_pred, zero_division=0),
-        precision_score(y_test, y_pred_dt, zero_division=0),
-        precision_score(y_test, y_pred_knn, zero_division=0)
-    ],
-    "Recall": [
-        recall_score(y_test, y_pred, zero_division=0),
-        recall_score(y_test, y_pred_dt, zero_division=0),
-        recall_score(y_test, y_pred_knn, zero_division=0)
-    ],
-    "F1 Score": [
-        f1_score(y_test, y_pred, zero_division=0),
-        f1_score(y_test, y_pred_dt, zero_division=0),
-        f1_score(y_test, y_pred_knn, zero_division=0)
-    ]
+classification_comparison = pd.DataFrame({ "Model": ["Logistic Regression", "Decision Tree", "KNN"],
+    "Accuracy": [accuracy_score(y_test, y_pred), accuracy_score(y_test, y_pred_dt),accuracy_score(y_test, y_pred_knn)],
+    "Precision": [precision_score(y_test, y_pred, zero_division=0), precision_score(y_test, y_pred_dt, zero_division=0),precision_score(y_test, y_pred_knn, zero_division=0)],
+    "Recall": [recall_score(y_test, y_pred, zero_division=0), recall_score(y_test, y_pred_dt, zero_division=0), recall_score(y_test, y_pred_knn, zero_division=0)],
+    "F1 Score": [ f1_score(y_test, y_pred, zero_division=0),f1_score(y_test, y_pred_dt, zero_division=0), f1_score(y_test, y_pred_knn, zero_division=0) ]
 })
 
 print("\nCLASSIFICATION MODEL COMPARISON")
@@ -714,5 +696,6 @@ plt.ylabel("Score")
 plt.ylim(0, 1.05)
 plt.xticks(rotation=10)
 plt.legend(loc="lower right")
+plt.grid()
 plt.tight_layout()
 plt.show()

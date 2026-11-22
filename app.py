@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.io as pio
+from pathlib import Path
 
 from sklearn.model_selection import train_test_split
 from sklearn.compose import ColumnTransformer
@@ -228,7 +229,8 @@ small {
 
 
 # ---------------- DATA ----------------
-DATA_FILE = "Amazon India Sales Data.csv"
+BASE_DIR = Path(__file__).resolve().parent
+DATA_FILE = str(BASE_DIR / "Amazon India Sales Data.csv")
 
 
 @st.cache_data
